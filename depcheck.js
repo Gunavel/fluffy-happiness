@@ -23,12 +23,12 @@ if (process.platform === "win32") {
 }
 
 // dependency processor local module
-const depsProcessor = require("./deps-processor");
+// const depsProcessor = require("./deps-processor");
 
 try {
   const options = {
     skipMissing: true,
-    ignoreDirs: ["dist", "build"]
+    ignoreDirs: ["dist", "build", "public", "_public"],
   };
 
   console.log("-".repeat(50));
@@ -36,7 +36,7 @@ try {
 
   // Run depcheck npm module with optional flags
   // see https://www.npmjs.com/package/depcheck for additional configs
-  depcheck(process.cwd(), options, unused => {
+  depcheck(process.cwd(), options, (unused) => {
     const deps = [...unused.dependencies, ...unused.devDependencies];
     if (deps.length === 0) {
       console.log("-".repeat(50));
@@ -59,7 +59,7 @@ try {
     console.log("-".repeat(50));
 
     // Process the collected dependencies
-    depsProcessor(deps);
+    // depsProcessor(deps);
   });
 } catch (e) {
   console.log("<".repeat(50));
