@@ -8,7 +8,9 @@
     "react-dom": "^16.12.0",
     "react-scripts": "^3.3.0"
   },
-  "bin": "./depcheck.js",
+  "bin": {
+    "deppy": "./depcheck.js"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
