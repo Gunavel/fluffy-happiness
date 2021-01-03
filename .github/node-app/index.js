@@ -10,18 +10,6 @@ const { projectsGroupsApi } = new Crowdin({
   token,
 });
 
-// // You can also use async/wait. Add `async` keyword to your outer function/method
-// async function getProjects() {
-//   try {
-//     const projects = await projectsGroupsApi.listProjects();
-//     console.log(projects);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-
-// await getProjects();
-
 async function createProject() {
   try {
     const request = {
@@ -38,11 +26,10 @@ async function createProject() {
       visibility: ProjectsGroupsModel.JoinPolicy.PRIVATE,
     };
 
-    console.log("Request: ", request);
+    const { data } = await projectsGroupsApi.addProject(request);
+    console.log("Create Project Response: ", data);
 
-    const data = await projectsGroupsApi.addProject(request);
-    console.log("Details: ", data);
-
+    const projectId = data.id;
     const editRequest = [
       {
         op: "replace",
@@ -66,8 +53,11 @@ async function createProject() {
       },
     ];
 
-    // const edit = await projectsGroupsApi.editProject(projectId, editRequest);
-    // console.log("Edit Details: ", edit);
+    const editResponse = await projectsGroupsApi.editProject(
+      projectId,
+      editRequest
+    );
+    console.log("Edit Project Response: ", editResponse);
   } catch (error) {
     console.log(error);
   }
