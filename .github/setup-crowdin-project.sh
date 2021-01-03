@@ -2,6 +2,10 @@
 set -e # Exit immediately if any scripts returns non zero status
 
 CROWDIN_API_TOKEN=$1
+ESS=$2
+
+echo "TOKEN=$CROWDIN_API_TOKEN"
+echo "ESS=$ESS"
 
 echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
 repo_name=$(echo "${GITHUB_REPOSITORY}" | cut -d'/' -f 2-)
