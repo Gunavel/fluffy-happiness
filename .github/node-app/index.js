@@ -43,11 +43,6 @@ async function createProject() {
       },
       {
         op: "replace",
-        path: "/inContextPseudoLanguageId",
-        value: "ach-UG",
-      },
-      {
-        op: "replace",
         path: "/autoTranslateDialects",
         value: true,
       },
