@@ -54,7 +54,7 @@ async function createProject() {
     );
     console.log("Edit Project Response: ", editResponse);
   } catch (error) {
-    console.log(error);
+    console.log(JSON.stringify(error));
   }
 }
 
