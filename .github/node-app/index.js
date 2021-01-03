@@ -2,8 +2,10 @@ import crowdin from "@crowdin/crowdin-api-client";
 
 const token = process.env["TOK"];
 
+const Crowdin = crowdin.default;
+
 // initialization of crowdin client
-const { projectsGroupsApi } = new crowdin({
+const { projectsGroupsApi } = new Crowdin({
   token,
 });
 
