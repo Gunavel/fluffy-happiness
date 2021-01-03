@@ -28,8 +28,14 @@ async function createProject() {
 
     const { data } = await projectsGroupsApi.addProject(request);
     console.log("Create Project Response: ", data);
+    return data;
+  } catch (error) {
+    console.log("Error: Create Project: ", JSON.stringify(error));
+  }
+}
 
-    const projectId = data.id;
+async function editProject(projectId) {
+  try {
     const editRequest = [
       {
         op: "replace",
@@ -40,6 +46,11 @@ async function createProject() {
         op: "replace",
         path: "/inContext",
         value: true,
+      },
+      {
+        op: "replace",
+        path: "/inContextPseudoLanguageId",
+        value: "ach-UG",
       },
       {
         op: "replace",
@@ -54,8 +65,14 @@ async function createProject() {
     );
     console.log("Edit Project Response: ", editResponse);
   } catch (error) {
-    console.log(JSON.stringify(error));
+    console.log("Error: Edit Project: ", JSON.stringify(error));
   }
 }
 
-createProject();
+async function run() {
+  //const { id: projectId } = await createProject();
+  await editProject(435488);
+  console.log(`Project ${repo} created successfully!`);
+}
+
+run();
