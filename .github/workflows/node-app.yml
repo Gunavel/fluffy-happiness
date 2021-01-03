@@ -29,5 +29,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "14"
-      - run: npm ci
-      - run: npm start
+      - name: Run
+        env:
+          CI: true
+          TOK: ${{ secrets.TOK }}
+        run: npm ci && npm start
