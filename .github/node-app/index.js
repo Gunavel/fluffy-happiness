@@ -1,6 +1,7 @@
-import crowdin from "@crowdin/crowdin-api-client";
+import crowdin, { ProjectsGroupsModel } from "@crowdin/crowdin-api-client";
 
 const token = process.env["TOK"];
+const [, repo] = process.env.GITHUB_REPOSITORY;
 
 const Crowdin = crowdin.default;
 
@@ -9,14 +10,40 @@ const { projectsGroupsApi } = new Crowdin({
   token,
 });
 
-// You can also use async/wait. Add `async` keyword to your outer function/method
-async function getProjects() {
+// // You can also use async/wait. Add `async` keyword to your outer function/method
+// async function getProjects() {
+//   try {
+//     const projects = await projectsGroupsApi.listProjects();
+//     console.log(projects);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+
+// await getProjects();
+
+async function createProject() {
   try {
-    const projects = await projectsGroupsApi.listProjects();
-    console.log(projects);
+    const request = {
+      name: repo,
+      sourceLanguageId: "en-GB",
+      targetLanguageIds: ["en-US"],
+      description: `Vault of ${repo} translations`,
+      type: ProjectsGroupsModel.Type.FILES_BASED,
+      skipUntranslatedStrings: true,
+      skipUntranslatedFiles: false,
+      exportApprovedOnly: true,
+      languageAccessPolicy: ProjectsGroupsModel.LanguageAccessPolicy.OPEN,
+      visibility: ProjectsGroupsModel.JoinPolicy.PRIVATE,
+    };
+
+    console.log("Request: ", request);
+
+    const { name, projectId } = await projectsGroupsApi.addProject(request);
+    console.log("Details: ", name, projectId);
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 }
 
-await getProjects();
+createProject();
