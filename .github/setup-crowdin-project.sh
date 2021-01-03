@@ -10,5 +10,5 @@ echo "ESS=$ESS"
 echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
 repo_name=$(echo "${GITHUB_REPOSITORY}" | cut -d'/' -f 2-)
 echo "repo_name=$repo_name"
-resp=$(curl -XGET -H 'Authorization: Bearer "$CROWDIN_API_TOKEN"' -H "Content-type: application/json" "https://api.crowdin.com/api/v2/projects")
+resp=$(curl -X GET -H 'Authorization: Bearer $CROWDIN_API_TOKEN' -H "Content-type: application/json" "https://api.crowdin.com/api/v2/projects")
 echo "resp=$resp"
