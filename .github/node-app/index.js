@@ -1,7 +1,7 @@
 import crowdin, { ProjectsGroupsModel } from "@crowdin/crowdin-api-client";
 
 const token = process.env["TOK"];
-const [, repo] = process.env.GITHUB_REPOSITORY;
+const [, repo] = process.env.GITHUB_REPOSITORY.split("/");
 
 const Crowdin = crowdin.default;
 
@@ -26,6 +26,7 @@ async function createProject() {
   try {
     const request = {
       name: repo,
+      identifier: repo,
       sourceLanguageId: "en-GB",
       targetLanguageIds: ["en-US"],
       description: `Vault of ${repo} translations`,
@@ -35,6 +36,10 @@ async function createProject() {
       exportApprovedOnly: true,
       languageAccessPolicy: ProjectsGroupsModel.LanguageAccessPolicy.OPEN,
       visibility: ProjectsGroupsModel.JoinPolicy.PRIVATE,
+      translateDuplicates: 2,
+      inContext: true,
+      inContextPseudoLanguageId: "ach-UG",
+      autoTranslateDialects: true,
     };
 
     console.log("Request: ", request);
