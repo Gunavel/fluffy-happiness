@@ -50,7 +50,7 @@ async function editProject(projectId) {
       {
         op: "replace",
         path: "/inContextPseudoLanguageId",
-        value: "ach-UG",
+        value: "ach",
       },
       {
         op: "replace",
@@ -70,8 +70,8 @@ async function editProject(projectId) {
 }
 
 async function run() {
-  //const { id: projectId } = await createProject();
-  await editProject(435488);
+  const { id: projectId } = await createProject();
+  await editProject(projectId);
   console.log(`Project ${repo} created successfully!`);
 }
 
