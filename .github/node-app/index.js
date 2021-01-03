@@ -36,16 +36,38 @@ async function createProject() {
       exportApprovedOnly: true,
       languageAccessPolicy: ProjectsGroupsModel.LanguageAccessPolicy.OPEN,
       visibility: ProjectsGroupsModel.JoinPolicy.PRIVATE,
-      translateDuplicates: 2,
-      inContext: true,
-      inContextPseudoLanguageId: "ach-UG",
-      autoTranslateDialects: true,
     };
 
     console.log("Request: ", request);
 
-    const { name, projectId } = await projectsGroupsApi.addProject(request);
-    console.log("Details: ", name, projectId);
+    const data = await projectsGroupsApi.addProject(request);
+    console.log("Details: ", data);
+
+    const editRequest = [
+      {
+        op: "replace",
+        path: "/translateDuplicates",
+        value: 2,
+      },
+      {
+        op: "replace",
+        path: "/inContext",
+        value: true,
+      },
+      {
+        op: "replace",
+        path: "/inContextPseudoLanguageId",
+        value: "ach-UG",
+      },
+      {
+        op: "replace",
+        path: "/autoTranslateDialects",
+        value: true,
+      },
+    ];
+
+    // const edit = await projectsGroupsApi.editProject(projectId, editRequest);
+    // console.log("Edit Details: ", edit);
   } catch (error) {
     console.log(error);
   }
