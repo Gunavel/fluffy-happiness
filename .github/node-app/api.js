@@ -162,8 +162,6 @@ function pushOriginalContents() {
   shell.exec("ls");
 
   // // Set the remote to the newly created repo
-  shell.exec('git config --global user.email "gunavel.bharathi@gmail.com"');
-  shell.exec('git config --global user.name "Gunavel"');
   shell.exec(`git pull origin ${defaultBranch}`);
   shell.exec(`git remote add ${newRepoName} ${newRepoUrl}`);
   shell.exec("rm -rf .github");
