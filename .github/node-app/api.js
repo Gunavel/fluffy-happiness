@@ -69,7 +69,7 @@ const newRepoName = `translations-${appName}`;
 const newRepoUrl = `https://github.com/${owner}/${newRepoName}.git`;
 const defaultBranch = "master";
 
-const token = process.env.GITHUB_ADMIN_ACCESS_TOKEN;
+const token = "1ef641e7070f1af9e8977d84036920dc6df3406c"; // process.env.GITHUB_ADMIN_ACCESS_TOKEN;
 const octokit = new Octokit({
   auth: `token ${token}`,
   previews: ["hellcat-preview"],
@@ -150,17 +150,22 @@ async function createTeam() {
 
 function pushOriginalContents() {
   logger.trace("Setting up duplicate repo...");
+
   shell.cd("repo");
-  // If we can't find the repo, clone it
-  if (shell.cd(repository).code !== 0) {
-    logger.debug("Can't find source repo locally. Cloning it...");
-    shell.exec(`git clone ${originalUrl} ${repository}`);
-    logger.debug("Finished cloning.");
-    shell.cd(repository);
-  }
+
+  logger.debug("Can't find source repo locally. Cloning it...");
+  shell.exec(`git clone ${originalUrl} ${repository}`);
+  logger.debug("Finished cloning.");
+  shell.cd(repository);
+
   // Set the remote to the newly created repo
+  shell.exec('git config --global user.email "gunavel.bharathi@gmail.com"');
+  shell.exec('git config --global user.name "Gunavel"');
   shell.exec(`git pull origin ${defaultBranch}`);
   shell.exec(`git remote add ${newRepoName} ${newRepoUrl}`);
+  shell.exec("rm -rf .github");
+  shell.exec("git add .");
+  shell.exec('git commit -m "Initial commit"');
   shell.exec(`git push -u ${newRepoName} ${defaultBranch}`);
   logger.info("Duplicated original repo");
 }
@@ -168,26 +173,22 @@ function pushOriginalContents() {
 // TODO it would be nice to do this as part of an automatic process,
 // but I'm too scared not to do it manually rn
 async function setupRepositoryAndTeam() {
-  if (await doesRepoExist()) {
-    logger.warn("Repo exists already.");
-    return;
-  }
+  // if (await doesRepoExist()) {
+  //   logger.warn("Repo exists already.");
+  //   return;
+  // }
 
-  logger.debug("Creating new repo in GitHub...");
-  await octokit.repos.createInOrg({
-    org: owner,
-    name: newRepoName,
-    // TODO generalize this (maybe get from the head repo?)
-    description: `(Work in progress) React documentation website`,
-  });
-  logger.info("Finished creating repo!");
+  // logger.debug("Creating new repo in GitHub...");
+  // await octokit.repos.createInOrg({
+  //   org: owner,
+  //   name: newRepoName,
+  //   // TODO generalize this (maybe get from the head repo?)
+  //   description: `(Work in progress) React documentation website`,
+  // });
+  // logger.info("Finished creating repo!");
 
   // Create the progress-tracking issue from the template
-  //   await Promise.all([
-  //     createProgressIssue(),
-  //     createTeam(),
-  //     pushOriginalContents(),
-  //   ]);
+  await Promise.all([pushOriginalContents()]);
 }
 
 setupRepositoryAndTeam();

@@ -3,7 +3,10 @@
 name: Node App
 
 # Controls when the action will run.
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - master
 
 defaults:
   run:
