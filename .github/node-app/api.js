@@ -162,33 +162,31 @@ function pushOriginalContents() {
   shell.exec("ls");
 
   // // Set the remote to the newly created repo
-  // shell.exec('git config --global user.email "gunavel.bharathi@gmail.com"');
-  // shell.exec('git config --global user.name "Gunavel"');
-  // shell.exec(`git pull origin ${defaultBranch}`);
-  // shell.exec(`git remote add ${newRepoName} ${newRepoUrl}`);
-  // shell.exec("rm -rf .github");
-  // shell.exec("git add .");
-  // shell.exec('git commit -m "Initial commit"');
-  // shell.exec(`git push -u ${newRepoName} ${defaultBranch}`);
-  // logger.info("Duplicated original repo");
+  shell.exec('git config --global user.email "gunavel.bharathi@gmail.com"');
+  shell.exec('git config --global user.name "Gunavel"');
+  shell.exec(`git pull origin ${defaultBranch}`);
+  shell.exec(`git remote add ${newRepoName} ${newRepoUrl}`);
+  shell.exec("rm -rf .github");
+  shell.exec(`git push -u ${newRepoName} ${defaultBranch}`);
+  logger.info("Duplicated original repo");
 }
 
 // TODO it would be nice to do this as part of an automatic process,
 // but I'm too scared not to do it manually rn
 async function setupRepositoryAndTeam() {
-  // if (await doesRepoExist()) {
-  //   logger.warn("Repo exists already.");
-  //   return;
-  // }
+  if (await doesRepoExist()) {
+    logger.warn("Repo exists already.");
+    return;
+  }
 
-  // logger.debug("Creating new repo in GitHub...");
-  // await octokit.repos.createInOrg({
-  //   org: owner,
-  //   name: newRepoName,
-  //   // TODO generalize this (maybe get from the head repo?)
-  //   description: `(Work in progress) React documentation website`,
-  // });
-  // logger.info("Finished creating repo!");
+  logger.debug("Creating new repo in GitHub...");
+  await octokit.repos.createInOrg({
+    org: owner,
+    name: newRepoName,
+    // TODO generalize this (maybe get from the head repo?)
+    description: `(Work in progress) React documentation website`,
+  });
+  logger.info("Finished creating repo!");
 
   // Create the progress-tracking issue from the template
   await Promise.all([pushOriginalContents()]);
