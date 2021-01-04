@@ -25,5 +25,5 @@ jobs:
       - name: Run
         env:
           CI: true
-          TOK: ${{ secrets.TOK }}
+          MY_SECRET: ${{ secrets.MY_SECRET }}
         run: cd .github/node-app && npm ci && npm start
