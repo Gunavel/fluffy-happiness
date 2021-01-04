@@ -161,13 +161,13 @@ function pushOriginalContents() {
   // // Set the remote to the newly created repo
   shell.exec(`git pull origin ${defaultBranch}`);
   const newRepoUrl = `https://${owner}:${token}@github.com/${owner}/${newRepoName}.git`;
-  shell.exec(`git remote set-url ${newRepoName} ${newRepoUrl}`);
+  shell.exec(`git remote set-url origin ${newRepoUrl}`);
   logger.info("1");
   // shell.exec(`git remote add ${newRepoName} ${newRepoUrl}`);
   logger.info("2");
   shell.exec("rm -rf .github");
   logger.info("3");
-  shell.exec(`git push -u ${newRepoName} ${defaultBranch}`);
+  shell.exec(`git push -u origin ${defaultBranch}`);
   logger.info("4");
   logger.info("Duplicated original repo");
 }
