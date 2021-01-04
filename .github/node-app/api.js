@@ -167,8 +167,12 @@ function pushOriginalContents() {
   logger.info("2");
   shell.exec("rm -rf .github");
   logger.info("3");
-  shell.exec(`git push -u origin ${defaultBranch}`);
+  shell.exec("git add .");
   logger.info("4");
+  shell.exec('git commit -m "test commit"');
+  logger.info("5");
+  shell.exec(`git push -u origin ${defaultBranch}`);
+  logger.info("6");
   logger.info("Duplicated original repo");
 }
 
