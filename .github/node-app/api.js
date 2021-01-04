@@ -149,23 +149,25 @@ async function createTeam() {
 }
 
 function pushOriginalContents() {
-  logger.trace("Setting up duplicate repo...");
-
   shell.cd("repo");
   shell.exec("echo $PWD");
 
-  logger.debug("Can't find source repo locally. Cloning it...");
+  logger.info("Can't find source repo locally. Cloning it...");
   shell.exec(`git clone ${originalUrl} ${repository}`);
-  logger.debug("Finished cloning.");
+  logger.info("Finished cloning.");
   shell.cd(repository);
   shell.exec("echo $PWD");
   shell.exec("ls");
 
   // // Set the remote to the newly created repo
   shell.exec(`git pull origin ${defaultBranch}`);
+  logger.info("1");
   shell.exec(`git remote add ${newRepoName} ${newRepoUrl}`);
+  logger.info("2");
   shell.exec("rm -rf .github");
+  logger.info("3");
   shell.exec(`git push -u ${newRepoName} ${defaultBranch}`);
+  logger.info("4");
   logger.info("Duplicated original repo");
 }
 
