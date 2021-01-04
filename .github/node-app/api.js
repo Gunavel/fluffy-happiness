@@ -174,10 +174,10 @@ function pushOriginalContents() {
 // TODO it would be nice to do this as part of an automatic process,
 // but I'm too scared not to do it manually rn
 async function setupRepositoryAndTeam() {
-  if (await doesRepoExist()) {
-    logger.warn("Repo exists already.");
-    return;
-  }
+  // if (await doesRepoExist()) {
+  //   logger.warn("Repo exists already.");
+  //   return;
+  // }
 
   // logger.debug("Creating new repo in GitHub...");
   // await octokit.repos.createInOrg({
