@@ -69,7 +69,7 @@ const newRepoName = `translations-${appName}`;
 const newRepoUrl = `https://github.com/${owner}/${newRepoName}.git`;
 const defaultBranch = "master";
 
-const token = "1ef641e7070f1af9e8977d84036920dc6df3406c"; // process.env.GITHUB_ADMIN_ACCESS_TOKEN;
+const token = process.env.GITHUB_ADMIN_ACCESS_TOKEN;
 const octokit = new Octokit({
   auth: `token ${token}`,
   previews: ["hellcat-preview"],
@@ -152,22 +152,23 @@ function pushOriginalContents() {
   logger.trace("Setting up duplicate repo...");
 
   shell.cd("repo");
+  shell.exec("echo $PWD");
 
-  logger.debug("Can't find source repo locally. Cloning it...");
-  shell.exec(`git clone ${originalUrl} ${repository}`);
-  logger.debug("Finished cloning.");
-  shell.cd(repository);
+  // logger.debug("Can't find source repo locally. Cloning it...");
+  // shell.exec(`git clone ${originalUrl} ${repository}`);
+  // logger.debug("Finished cloning.");
+  // shell.cd(repository);
 
-  // Set the remote to the newly created repo
-  shell.exec('git config --global user.email "gunavel.bharathi@gmail.com"');
-  shell.exec('git config --global user.name "Gunavel"');
-  shell.exec(`git pull origin ${defaultBranch}`);
-  shell.exec(`git remote add ${newRepoName} ${newRepoUrl}`);
-  shell.exec("rm -rf .github");
-  shell.exec("git add .");
-  shell.exec('git commit -m "Initial commit"');
-  shell.exec(`git push -u ${newRepoName} ${defaultBranch}`);
-  logger.info("Duplicated original repo");
+  // // Set the remote to the newly created repo
+  // shell.exec('git config --global user.email "gunavel.bharathi@gmail.com"');
+  // shell.exec('git config --global user.name "Gunavel"');
+  // shell.exec(`git pull origin ${defaultBranch}`);
+  // shell.exec(`git remote add ${newRepoName} ${newRepoUrl}`);
+  // shell.exec("rm -rf .github");
+  // shell.exec("git add .");
+  // shell.exec('git commit -m "Initial commit"');
+  // shell.exec(`git push -u ${newRepoName} ${defaultBranch}`);
+  // logger.info("Duplicated original repo");
 }
 
 // TODO it would be nice to do this as part of an automatic process,

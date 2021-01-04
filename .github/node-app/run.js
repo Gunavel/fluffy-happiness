@@ -16,7 +16,7 @@ const appFiles = fs.readdirSync(appsDir);
 if (shell.ls("repo").code !== 0) {
   console.log("Creating Repo:");
   shell.mkdir("repo");
-  shell.mkdir("echo $PWD");
+  shell.exec("echo $PWD");
 }
 
 // We run the script separately for each language so that the shelljs global state
