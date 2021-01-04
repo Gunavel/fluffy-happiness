@@ -66,7 +66,6 @@ logger.level = "info";
 const originalUrl = `https://github.com/${owner}/${repository}.git`;
 
 const newRepoName = `translations-${appName}`;
-const newRepoUrl = `https://github.com/${owner}/${newRepoName}.git`;
 const defaultBranch = "master";
 
 const token = process.env.MY_SECRET;
@@ -161,8 +160,10 @@ function pushOriginalContents() {
 
   // // Set the remote to the newly created repo
   shell.exec(`git pull origin ${defaultBranch}`);
+  const newRepoUrl = `https://${owner}:${token}@github.com/${owner}/${newRepoName}.git`;
+  shell.exec(`git remote set-url ${newRepoName} ${newRepoUrl}`);
   logger.info("1");
-  shell.exec(`git remote add ${newRepoName} ${newRepoUrl}`);
+  // shell.exec(`git remote add ${newRepoName} ${newRepoUrl}`);
   logger.info("2");
   shell.exec("rm -rf .github");
   logger.info("3");
