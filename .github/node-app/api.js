@@ -159,6 +159,7 @@ function pushOriginalContents() {
   logger.debug("Finished cloning.");
   shell.cd(repository);
   shell.exec("echo $PWD");
+  shell.exec("ls");
 
   // // Set the remote to the newly created repo
   // shell.exec('git config --global user.email "gunavel.bharathi@gmail.com"');
