@@ -18,9 +18,9 @@ async function updateReadme() {
   shell.exec('git config --global user.email "gunavel.bharathi@gmail.com"');
   shell.exec('git config --global user.name "Gunavel"');
 
-  shell.exec(`git add TESTREADME.md`);
-  shell.exec(`git commit -m updatedAppsList [skip ci]`);
-  shell.exec(`git push -u origin master`);
+  shell.exec("git add TESTREADME.md");
+  shell.exec('git commit -m "updatedAppsList"');
+  shell.exec("git push -u origin master");
 }
 
 module.exports = {
