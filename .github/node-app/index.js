@@ -1,78 +1,27 @@
-import crowdin, { ProjectsGroupsModel } from "@crowdin/crowdin-api-client";
+/**
+ * Run [command] on the given [configFile] on all languages in the given [langDir]
+ *
+ * ```
+ * runAll [command] [configfile] [langDir]
+ * ```
+ */
+const fs = require("fs");
+const Promise = require("bluebird");
+const shell = Promise.promisifyAll(require("shelljs"));
 
-const token = process.env["TOK"];
-const [, repo] = process.env.GITHUB_REPOSITORY.split("/");
+const [configFile, appsDir] = ["config.json", "apps"];
+const appFiles = fs.readdirSync(appsDir);
 
-const Crowdin = crowdin.default;
+// Make the repo directory now so that child processes don't error out
+if (shell.ls("repo").code !== 0) {
+  console.log("Creating Repo:");
+  shell.mkdir("repo");
+  shell.exec("echo $PWD");
+}
 
-// initialization of crowdin client
-const { projectsGroupsApi } = new Crowdin({
-  token,
+// We run the script separately for each language so that the shelljs global state
+// (e.g. working directory) doesn't interfere between runs
+Promise.map(appFiles, (appFile) => {
+  const path = `${appsDir}/${appFile}`;
+  return shell.execAsync(`node setup.js ${configFile} ${path}`);
 });
-
-async function createProject() {
-  try {
-    const request = {
-      name: repo,
-      identifier: repo,
-      sourceLanguageId: "en-GB",
-      targetLanguageIds: ["en-US"],
-      description: `Vault of ${repo} translations`,
-      type: ProjectsGroupsModel.Type.FILES_BASED,
-      skipUntranslatedStrings: true,
-      skipUntranslatedFiles: false,
-      exportApprovedOnly: true,
-      languageAccessPolicy: ProjectsGroupsModel.LanguageAccessPolicy.OPEN,
-      visibility: ProjectsGroupsModel.JoinPolicy.PRIVATE,
-    };
-
-    const { data } = await projectsGroupsApi.addProject(request);
-    console.log("Create Project Response: ", data);
-    return data;
-  } catch (error) {
-    console.log("Error: Create Project: ", JSON.stringify(error));
-  }
-}
-
-async function editProject(projectId) {
-  try {
-    const editRequest = [
-      {
-        op: "replace",
-        path: "/translateDuplicates",
-        value: 2,
-      },
-      {
-        op: "replace",
-        path: "/inContext",
-        value: true,
-      },
-      {
-        op: "replace",
-        path: "/inContextPseudoLanguageId",
-        value: "ach",
-      },
-      {
-        op: "replace",
-        path: "/autoTranslateDialects",
-        value: true,
-      },
-    ];
-
-    const editResponse = await projectsGroupsApi.editProject(
-      projectId,
-      editRequest
-    );
-    console.log("Edit Project Response: ", editResponse);
-  } catch (error) {
-    console.log("Error: Edit Project: ", JSON.stringify(error));
-  }
-}
-
-async function run() {
-  const { id: projectId } = await createProject();
-  await editProject(projectId);
-  console.log(`Project ${repo} created successfully!`);
-}
-
-run();
